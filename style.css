@@ -1,0 +1,401 @@
+:root {
+    --font-family-sans-serif: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    
+    /* Colors based on the target image and feedback */
+    --text-color-headline: #ffffff;
+    --text-color-form-secondary: #d1d1d1; /* Light gray for placeholders, links, "Remember me" - visible on glass */
+    --text-color-input-typed: #333333; /* Darker color for text typed into inputs */
+    --text-color-button-login: #212529; /* Black or very dark gray for "Log in" button text */
+    
+    --background-color-button-login: #ffffff;
+    --background-color-glass-card: rgba(255, 255, 255, 0.15); /* Semi-transparent white for glassmorphism */
+    
+    --border-color-input-bottom: rgba(224, 224, 224, 0.6); /* Slightly more opaque for visibility */
+    --border-color-checkbox: #d1d1d1;
+    --background-color-checkbox-checked: #d1d1d1;
+    --checkmark-color-checkbox: #212529;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family-sans-serif);
+    min-height: 100vh; /* Ensure it covers the full viewport height */
+    display: flex;
+    align-items: center; /* Vertically center the content */
+    justify-content: center; /* Horizontally center the content */
+    color: var(--text-color-form-secondary); /* Default text color for the page (mostly for the form) */
+    overflow: hidden; /* Prevent scrollbars during video playback */
+}
+
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Behind all content */
+}
+
+/* Overlay to enhance glassmorphism */
+.login-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05); /* Subtle light overlay */
+    z-index: 0;
+}
+
+.login-container { /* This div is in the HTML, can be used for additional centering if body flex isn't enough, or removed if body handles it all */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px; /* Some padding for smaller screens */
+    box-sizing: border-box;
+}
+
+.login-card {
+    background-color: var(--background-color-glass-card);
+    padding: 35px 45px; /* Adjusted padding for a slightly more spacious feel like the image */
+    border-radius: 12px; /* Moderately rounded corners */
+    text-align: center;
+    width: 100%;
+    max-width: 380px; /* Max width for the form card */
+    box-sizing: border-box;
+
+    /* Glassmorphism Effect */
+    backdrop-filter: blur(10px); /* Blur value, adjust as needed to match image */
+    -webkit-backdrop-filter: blur(10px); /* Safari prefix */
+    /* No border or box-shadow as per instructions */
+}
+
+.login-card h1 {
+    font-size: 30px; /* Prominent headline size */
+    font-weight: 600; /* Semi-bold */
+    color: var(--text-color-headline);
+    margin-top: 0; /* Remove default margin */
+    margin-bottom: 35px; /* Space below headline */
+}
+
+.input-group {
+    position: relative; /* For absolute positioning of the icon */
+    margin-bottom: 22px; /* Space between input fields */
+}
+
+.input-group input[type="email"],
+.input-group input[type="password"] {
+    width: 100%;
+    padding: 12px 40px 12px 10px; /* Padding: top right(for icon) bottom left */
+    background-color: transparent; /* Transparent background for glass effect */
+    border: none; /* No side/top borders */
+    border-bottom: 1px solid var(--border-color-input-bottom); /* Thin light gray bottom border */
+    font-size: 16px;
+    color: var(--text-color-input-typed); /* Color for typed text */
+    box-sizing: border-box;
+    outline: none; /* Remove default focus outline */
+}
+
+.input-group input[type="email"]::placeholder,
+.input-group input[type="password"]::placeholder {
+    color: var(--text-color-form-secondary);
+    opacity: 1; /* Ensure placeholder is fully opaque if color has alpha */
+}
+
+/* Change text color when user types */
+.input-group input[type="email"]:not(:placeholder-shown),
+.input-group input[type="password"]:not(:placeholder-shown) {
+    color: var(--text-color-input-typed);
+}
+
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Position icon to the right */
+    transform: translateY(-50%);
+    color: var(--text-color-form-secondary); /* Light gray icon color */
+    pointer-events: none; /* Allow clicks to pass through to input */
+}
+
+.input-icon svg { /* Ensure SVG inherits color */
+    display: block; /* Helps with alignment */
+}
+
+.controls-row {
+    display: flex;
+    justify-content: space-between; /* "Remember me" left, "Forgot password?" right */
+    align-items: center;
+    margin-bottom: 30px; /* Space below this row */
+    font-size: 14px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input[type="checkbox"] {
+    appearance: none; /* Remove default browser styling */
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border-color-checkbox); /* Light gray border */
+    border-radius: 3px; /* Slightly rounded square */
+    margin-right: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+    position: relative; /* For checkmark positioning */
+    outline: none;
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background-color: var(--background-color-checkbox-checked); /* Light gray background when checked */
+    border-color: var(--border-color-checkbox);
+}
+
+.remember-me input[type="checkbox"]:checked::after {
+    content: '\\2713'; /* Unicode checkmark */
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--checkmark-color-checkbox); /* Dark checkmark */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.remember-me label {
+    color: var(--text-color-form-secondary);
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: var(--text-color-form-secondary);
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-color-button-login); /* Solid white background */
+    border: none;
+    border-radius: 50px; /* Pill-shaped */
+    font-size: 16px;
+    font-weight: 600; /* Semi-bold button text */
+    color: var(--text-color-button-login); /* Black or very dark gray text */
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    margin-bottom: 25px; /* Space below login button */
+}
+
+.btn-login:hover {
+    opacity: 0.9; /* Slight hover effect */
+}
+
+.register-link {
+    font-size: 14px;
+    color: var(--text-color-form-secondary);
+    margin-top: 0; /* Remove default paragraph margin */
+}
+
+.register-link a {
+    color: var(--text-color-form-secondary);
+    font-weight: 500; /* Slightly bolder link */
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Custom Autocomplete Component Styles */
+.custom-autocomplete {
+    position: absolute;
+    width: 100%;
+    margin-top: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+    z-index: 100;
+    display: none;
+}
+
+.custom-autocomplete.show {
+    display: block;
+}
+
+.autocomplete-label {
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--text-color-form-secondary);
+    border-bottom: 1px solid rgba(224, 224, 224, 0.3);
+}
+
+.suggestions-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+    background-color: rgba(224, 224, 224, 0.3);
+}
+
+.suggestion-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(255, 0, 0, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+}
+
+.suggestion-item.active::after {
+    opacity: 1;
+}
+
+.left-icon {
+    margin-right: 12px;
+    color: var(--text-color-form-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.left-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.right-icon {
+    margin-left: auto;
+    color: var(--text-color-form-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.right-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.suggestion-text {
+    flex-grow: 1;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-color-input-typed);
+}
+
+/* Responsive Design Additions */
+@media (max-width: 768px) {
+    .login-card {
+        padding: 25px 30px;
+        max-width: 90%;
+    }
+
+    .input-group input[type="email"],
+    .input-group input[type="password"] {
+        padding: 10px 35px 10px 10px;
+        font-size: 15px;
+    }
+
+    .btn-login {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .controls-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .remember-me {
+        justify-content: flex-start;
+    }
+
+    .forgot-password {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .custom-autocomplete {
+        max-height: 150px;
+    }
+    
+    .suggestion-item {
+        padding: 8px 10px;
+    }
+    
+    .left-icon svg,
+    .right-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .suggestion-text {
+        font-size: 13px;
+    }
+    
+    .autocomplete-label {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+    .login-card {
+        padding: 20px 25px;
+    }
+
+    .login-card h1 {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+
+    .input-group input[type="email"],
+    .input-group input[type="password"] {
+        font-size: 14px;
+        padding: 8px 30px 8px 10px;
+    }
+
+    .input-icon {
+        right: 8px;
+    }
+
+    .btn-login {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
